@@ -1,0 +1,22 @@
+{
+  "name": "garadeinerds",
+  "version": "1.0.0",
+  "description": "gioco in cui due giocatori si sfidano rispondendo alternativamente a domande di cultura generale",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dragoist/GaraDeiNerds.git"
+  },
+  "keywords": [
+    "Node.js"
+  ],
+  "author": "Dario Giuseppe Maria Rizzo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dragoist/GaraDeiNerds/issues"
+  },
+  "homepage": "https://github.com/dragoist/GaraDeiNerds#readme"
+}
