@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device.width, inital-sacle=1.0">
+        <title>Game Client</title>
+    </head>
+    <body>
+        <h1>Welcome to the Game of Nerds</h1>
+        <div>
+            <p id="timer"></p>
+        </div>
+
+        <div id="scoreContainer" style="display: none;">
+            <h2>Score:</h2>
+            <p id="player1Score"></p>
+            <p id="player2Score"></p>
+        </div>
+
+        <form id="nameForm">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" required>
+            <button type="submit">Start</button>
+        </form>
+
+        <div id="waitingMessage" style="display: none;">
+            <p>In attesa di un avversario...</p>
+        </div>
+
+        <div id="questionContainer" style="display: none;">
+            <h2>Question:</h2>
+            <p id="question"></p>
+            <form id="answerForm">
+                <input type="radio" id="answer1" value=0>
+                <label id="answerLabel1" for="answer1"></label><br>
+                <input type="radio" id="answer2" value=0>
+                <label id="answerLabel2" for="answer2"></label><br>
+                <input type="radio" id="answer3" value=0>
+                <label id="answerLabel3" for="answer3"></label><br>
+                <input type="radio" id="answer4" value=0>
+                <label id="answerLabel4" for="answer4"></label><br>
+                <button type="submit">Submit answer</button>
+            </form>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+
+            const nameForm = document.getElementById('nameForm');
+            const questionContainer = document.getElementById('questionContainer');
+            const answerForm = document.getElementById('answerForm');
+            const scoreContainer = document.getElementById('scoreContainer');
+            const waitingMessage = document.getElementById('waitingMessage');
+            const player1Score = document.getElementById('player1Score');
+            const player2Score = document.getElementById('player2Score');
+
+            let timer;
+            let timeLeft = 30;
+            let playerName = '';
+
+            nameForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                playerName = document.getElementById('name').value;
+                socket.emit('playerName', playerName);
+                nameForm.style.display = 'none';
+                waitingMessage.style.display = 'block';
+            });
+
+            socket.on('question', (question) => {
+                questionContainer.style.display = 'block';
+                answerForm.style.display = 'block';
+                document.getElementById('question').textContent = question.question;
+                document.getElementById('answer1').setAttribute('value', question.answers[0][1])
+                document.getElementById('answerLabel1').textContent = question.answers[0][0];
+                document.getElementById('answer2').setAttribute('value', question.answers[1][1])
+                document.getElementById('answerLabel2').textContent = question.answers[1][0];
+                document.getElementById('answer3').setAttribute('value', question.answers[2][1])
+                document.getElementById('answerLabel3').textContent = question.answers[2][0];
+                document.getElementById('answer4').setAttribute('value', question.answers[3][1])
+                document.getElementById('answerLabel4').textContent = question.answers[3][0];
+                waitingMessage.textContent = `Your opponent is currently answering`;
+                startTimer();
+            });
+
+            answerForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const answer = document.querySelector('input[type="radio"]:checked').value;
+                console.log(`${answer}`);
+                socket.emit('answer', answer);
+                questionContainer.style.display = 'none';
+                waitingMessage.textContent = 'Waiting for opponent...';
+                stopTimer();
+            });
+
+            socket.on('score', (score) => {
+                scoreContainer.style.display = 'block';
+                document.getElementById('player1Score').textContent = `${score[0]}: ${score[1]}`;
+                document.getElementById('player2Score').textContent = `${score[2]}: ${score[3]}`;
+            });
+
+            socket.on('opponentQuestion', (question) => {
+                questionContainer.style.display = 'block';
+                document.getElementById('question').textContent = question.question;
+                answerForm.style.display = 'none';
+                waitingMessage.textContent = 'Your opponent is answering';
+            });
+
+            function startTimer() {
+                timeLeft = 30;
+                updateTimerDisplay();
+
+                timer = setInterval( () => {
+                    timeLeft--;
+                    updateTimerDisplay();
+
+                    if (timeLeft === 0) {
+                        clearInterval(timer);
+                        alert('Time to answer is over!');
+                        socket.emit('timeUp');
+                    }
+                }, 1000);
+            }
+
+            function updateTimerDisplay(){
+                const timerDisplay = document.getElementById('timer');
+                timerDisplay.textContent = `Time left: ${timeLeft} seconds`;
+            }
+        </script>
+    </body>
+</html>

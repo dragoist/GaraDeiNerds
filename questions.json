@@ -1,0 +1,56 @@
+[
+    {
+       "question": "What is the capital of France?",
+       "answers": [
+            ["Lille", 0],
+            ["Nice", 0],
+            ["Paris", 1],
+            ["Marseille", 0]
+       ]
+    },
+    {
+        "question": "What is the largest planet in our solar system?",
+        "answers": [
+            ["Jupiter", 1],
+            ["Mercury", 0],
+            ["Venus", 0],
+            ["Saturn", 0]
+        ]
+    },
+    {
+        "question": "What is the chemical formula for water?",
+        "answers": [
+            ["H2O2", 0],
+            ["HCl", 0],
+            ["CO2", 0],
+            ["H2O", 1]
+        ]
+    },
+    {
+        "question": "When was America discovered?",
+        "answers": [
+            ["1592", 0],
+            ["1492", 1],
+            ["1392", 0],
+            ["1692", 0]
+        ]
+    },
+    {
+        "question": "When did World War II end?",
+        "answers": [
+            ["September 2, 1946", 0],
+            ["September 1, 1944", 0],
+            ["September 2, 1945", 1],
+            ["September 1, 1939", 0]
+        ]
+    },
+    {
+        "question": "Who is considered the father of antibiotics?",
+        "answers": [
+            ["A. Flaming", 0],
+            ["A. Fleming", 1],
+            ["A. Flamming", 0],
+            ["A. Felming", 0]
+        ]
+    }
+]
