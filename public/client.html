@@ -7,9 +7,6 @@
     </head>
     <body>
         <h1>Welcome to the Game of Nerds</h1>
-        <div>
-            <p id="timer"></p>
-        </div>
 
         <div id="scoreContainer" style="display: none;">
             <h2>Score:</h2>
@@ -43,6 +40,8 @@
             </form>
         </div>
 
+        <button id="newGameButton" style="display:none;">New Game</button>
+
         <script src="/socket.io/socket.io.js"></script>
         <script>
             const socket = io();
@@ -54,9 +53,8 @@
             const waitingMessage = document.getElementById('waitingMessage');
             const player1Score = document.getElementById('player1Score');
             const player2Score = document.getElementById('player2Score');
+            const newGameButton = document.getElementById('newGameButton');
 
-            let timer;
-            let timeLeft = 30;
             let playerName = '';
 
             nameForm.addEventListener('submit', (event) => {
@@ -70,6 +68,8 @@
             socket.on('question', (question) => {
                 questionContainer.style.display = 'block';
                 answerForm.style.display = 'block';
+                waitingMessage.style.display = 'none';
+
                 document.getElementById('question').textContent = question.question;
                 document.getElementById('answer1').setAttribute('value', question.answers[0][1])
                 document.getElementById('answerLabel1').textContent = question.answers[0][0];
@@ -79,18 +79,20 @@
                 document.getElementById('answerLabel3').textContent = question.answers[2][0];
                 document.getElementById('answer4').setAttribute('value', question.answers[3][1])
                 document.getElementById('answerLabel4').textContent = question.answers[3][0];
-                waitingMessage.textContent = `Your opponent is currently answering`;
-                startTimer();
+                
+                const radioButtons = document.querySelectorAll('input[type="radio"]');
+                radioButtons.forEach(radioButton => {
+                    radioButton.checked = false;
+                });
             });
 
             answerForm.addEventListener('submit', (event) => {
                 event.preventDefault();
                 const answer = document.querySelector('input[type="radio"]:checked').value;
-                console.log(`${answer}`);
                 socket.emit('answer', answer);
                 questionContainer.style.display = 'none';
+                waitingMessage.style.display = 'block';
                 waitingMessage.textContent = 'Waiting for opponent...';
-                stopTimer();
             });
 
             socket.on('score', (score) => {
@@ -103,29 +105,34 @@
                 questionContainer.style.display = 'block';
                 document.getElementById('question').textContent = question.question;
                 answerForm.style.display = 'none';
+                waitingMessage.style.display = 'block';
                 waitingMessage.textContent = 'Your opponent is answering';
             });
 
-            function startTimer() {
-                timeLeft = 30;
-                updateTimerDisplay();
+            socket.on('endGame', (winnerText) => {
+                newGameButton.style.display = 'block';
+                document.getElementById('timerBar').style.display='none';
+                questionContainer.style.display = 'none';
+                waitingMessage.style.display = 'block';
+                waitingMessage.textContent = winnerText;
+            });
 
-                timer = setInterval( () => {
-                    timeLeft--;
-                    updateTimerDisplay();
+            newGameButton.addEventListener('click', () => {
+                socket.emit('newGame');
+                newGameButton.style.display = 'none';
+            });
 
-                    if (timeLeft === 0) {
-                        clearInterval(timer);
-                        alert('Time to answer is over!');
-                        socket.emit('timeUp');
-                    }
-                }, 1000);
-            }
-
-            function updateTimerDisplay(){
-                const timerDisplay = document.getElementById('timer');
-                timerDisplay.textContent = `Time left: ${timeLeft} seconds`;
-            }
+            socket.on('newGame', () => {
+                nameForm.style.display = 'block';
+                questionContainer.style.display = 'none';
+                answerForm.style.display = 'none';
+                scoreContainer.style.display = 'none';
+                waitingMessage.style.display = 'none';
+                newGameButton.style.display = 'none';
+                playerName = '';
+                player1Score.textContent = '';
+                player2Score.textContent = '';
+            });
         </script>
     </body>
 </html>

@@ -52,5 +52,77 @@
             ["A. Flamming", 0],
             ["A. Felming", 0]
         ]
+    },
+    {
+        "question": "What is the biggest ocean in the world?",
+        "answers": [
+            ["Pacific Ocean", 1],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "question": "What is Japan's Capital?",
+        "answers": [
+            [],
+            [],
+            ["Tokyo", 1],
+            []
+        ]
+    },
+    {
+        "question": "What is the chemical symbol for Gold?",
+        "answers": [
+            [],
+            ["Au", 1],
+            [],
+            []
+        ]
+    },
+    {
+        "question": "In which Nation can you find Tour Eiffel?",
+        "answers": [
+            [],
+            [],
+            [],
+            ["France", 1]
+        ]
+    },
+    {
+        "question": "What's the biggest human organ?",
+        "answers": [
+            [],
+            ["Skin", 1],
+            [],
+            []
+        ]
+    },
+    {
+        "question": "What's the longest river of the World?",
+        "answers": [
+            [],
+            [],
+            ["Nilo", 1],
+            []
+        ]
+    },
+    {
+        "question": "Who painted the Gioconda?",
+        "answers": [
+            ["L. Da Vinci", 1],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "question": "What's the most common chemical element in the Universe?",
+        "answers": [
+            [],
+            [],
+            [],
+            ["Hydrogen", 1]
+        ]
     }
 ]

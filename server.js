@@ -14,7 +14,8 @@ const questions = JSON.parse(fs.readFileSync('questions.json', 'utf-8'));
 const usedQuestions = new Set();
 
 const players = [];
-let currentPlayer = players;
+let currentPlayer;
+let otherPlayer;
 let currentPlayerIndex = -1;
 
 server.listen(PORT, () =>{
@@ -34,28 +35,28 @@ io.on('connection', (socket) => {
     });
 
     socket.on('answer', (answer) => {
-        console.log(`Answer: ${answer}`);
         if (answer === "1") {
             currentPlayer.score++;
         }
         
-        const otherPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
-        const otherPlayer = players[otherPlayerIndex];
-        currentPlayerIndex = otherPlayerIndex;
+        currentPlayer = otherPlayer;
+        otherPlayer = players[currentPlayerIndex];
+        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
     
         currentPlayer.socket.emit('score', [players[0].name,players[0].score,players[1].name,players[1].score]);
         otherPlayer.socket.emit('score', [players[0].name,players[0].score,players[1].name,players[1].score]);
         sendQuestion();
     });
 
-    socket.on('timeUp', () => {
-        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
-        sendQuestion();
+    socket.on('newGame', () => {
+        resetGame();
     });
 });
 
 function startGame() {
     currentPlayerIndex = 0;
+    currentPlayer = players[currentPlayerIndex];
+    otherPlayer = players[1];
     sendQuestion();
 }
 
@@ -66,20 +67,30 @@ function sendQuestion(){
     else{
         let questionIndex;
         do {
-            questionIndex = Math.round(Math.random() * questions.length);
+            questionIndex = Math.floor(Math.random() * questions.length);
         } while (usedQuestions.has(questionIndex));
 
         const question = questions[questionIndex];
-        currentPlayer = players[currentPlayerIndex];
-        currentPlayer.currentQuestion = question;
+    
         currentPlayer.socket.emit('question', question);
-        players[currentPlayerIndex === 0 ? 1 : 0].socket.emit('opponentQuestion', question);
+        otherPlayer.socket.emit('opponentQuestion', question);
+
         usedQuestions.add(questionIndex);
     }
 }
 
 function endGame(){
-    currentPlayer.socket.emit('endGame');
-    players[currentPlayerIndex === 0 ? 1 : 0].socket.emit('endGame');
-    
+    if (players[0].score === players[1].score){
+        io.emit('endGame', "It's a Draw!");
+    }
+    else{
+        io.emit('endGame', `The winner is ${players[0].score > players[1].score ? players[0].name : players[1].name}`);
+    }
+}
+
+function resetGame(){
+    usedQuestions.clear();
+    players.clear;
+    players.length = 0;
+    io.emit('newGame');
 }
