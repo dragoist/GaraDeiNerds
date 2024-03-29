@@ -1,3 +1,4 @@
+// http://localhost:3000/client.html? to connect
 const express = require('express');
 const http = require('http');
 const fs = require('fs');

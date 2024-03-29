@@ -57,71 +57,71 @@
         "question": "What is the biggest ocean in the world?",
         "answers": [
             ["Pacific Ocean", 1],
-            [],
-            [],
-            []
+            ["Indian Ocean", 0],
+            ["Atlantic Ocean", 0],
+            ["Artic Ocean", 0]
         ]
     },
     {
         "question": "What is Japan's Capital?",
         "answers": [
-            [],
-            [],
+            ["Kyoto", 0],
+            ["Nagasaki", 0],
             ["Tokyo", 1],
-            []
+            ["Kanto", 0]
         ]
     },
     {
         "question": "What is the chemical symbol for Gold?",
         "answers": [
-            [],
+            ["Go", 0],
             ["Au", 1],
-            [],
-            []
+            ["Si", 0],
+            ["C", 0]
         ]
     },
     {
         "question": "In which Nation can you find Tour Eiffel?",
         "answers": [
-            [],
-            [],
-            [],
+            ["Paris", 0],
+            ["England", 0],
+            ["Switzerland", 0],
             ["France", 1]
         ]
     },
     {
         "question": "What's the biggest human organ?",
         "answers": [
-            [],
+            ["Brain", 0],
             ["Skin", 1],
-            [],
-            []
+            ["Skeleton", 0],
+            ["Intestine", 0]
         ]
     },
     {
         "question": "What's the longest river of the World?",
         "answers": [
-            [],
-            [],
+            ["Yellow River", 0],
+            ["Amazon River", 0],
             ["Nilo", 1],
-            []
+            ["Mississippi River", 0]
         ]
     },
     {
         "question": "Who painted the Gioconda?",
         "answers": [
             ["L. Da Vinci", 1],
-            [],
-            [],
-            []
+            ["F. Brunelleschi", 0],
+            ["Giotto", 0],
+            ["Verrocchio", 0]
         ]
     },
     {
         "question": "What's the most common chemical element in the Universe?",
         "answers": [
-            [],
-            [],
-            [],
+            ["Helium", 0],
+            ["Oxygen", 0],
+            ["Silicon", 0],
             ["Hydrogen", 1]
         ]
     }
