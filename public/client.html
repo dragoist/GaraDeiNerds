@@ -21,20 +21,20 @@
         </form>
 
         <div id="waitingMessage" style="display: none;">
-            <p>In attesa di un avversario...</p>
+            <p>Waiting for opponent...</p>
         </div>
 
         <div id="questionContainer" style="display: none;">
             <h2>Question:</h2>
             <p id="question"></p>
             <form id="answerForm">
-                <input type="radio" id="answer1" value=0>
+                <input type="radio" id="answer1" name="answer" value=0>
                 <label id="answerLabel1" for="answer1"></label><br>
-                <input type="radio" id="answer2" value=0>
+                <input type="radio" id="answer2" name="answer" value=0>
                 <label id="answerLabel2" for="answer2"></label><br>
-                <input type="radio" id="answer3" value=0>
+                <input type="radio" id="answer3" name="answer" value=0>
                 <label id="answerLabel3" for="answer3"></label><br>
-                <input type="radio" id="answer4" value=0>
+                <input type="radio" id="answer4" name="answer" value=0>
                 <label id="answerLabel4" for="answer4"></label><br>
                 <button type="submit">Submit answer</button>
             </form>
@@ -63,6 +63,7 @@
                 socket.emit('playerName', playerName);
                 nameForm.style.display = 'none';
                 waitingMessage.style.display = 'block';
+                waitingMessage.textContent = 'Waiting for opponent...';
             });
 
             socket.on('question', (question) => {
@@ -111,7 +112,6 @@
 
             socket.on('endGame', (winnerText) => {
                 newGameButton.style.display = 'block';
-                document.getElementById('timerBar').style.display='none';
                 questionContainer.style.display = 'none';
                 waitingMessage.style.display = 'block';
                 waitingMessage.textContent = winnerText;
